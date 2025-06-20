@@ -1,3 +1,14 @@
+export const roleCategories=[
+  {
+    id: "user",
+    label: "User",
+  },
+  {
+    id:"instructor",
+    label:"Instructor",
+  }
+]
+
 export const signUpFormControls = [
   {
     name: "userName",
@@ -19,6 +30,14 @@ export const signUpFormControls = [
     placeholder: "Enter your password",
     type: "password",
     componentType: "input",
+  },
+  {
+    name: "role",
+    label: "Role",
+    componentType: "select",
+    type: "text",
+    placeholder: "",
+    options: roleCategories,
   },
 ];
 

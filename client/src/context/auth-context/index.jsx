@@ -2,6 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { initialSignInFormData, initialSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext(null);
 
@@ -17,14 +18,48 @@ export default function AuthProvider({ children }) {
   async function handleRegisterUser(event) {
     event.preventDefault();
     const data = await registerService(signUpFormData);
+
+    // console.log("From handleRegister", data);
+
+    if(data.success){
+      toast.success(data?.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        // transition: Bounce,
+      });
+    }
+    else{
+      toast.error(data?.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        // transition: Bounce,
+      });
+    }
+
+    setSignUpFormData(initialSignUpFormData);
   }
 
   async function handleLoginUser(event) {
+
     event.preventDefault();
     const data = await loginService(signInFormData);
-    console.log(data, "datadatadatadatadata");
+
+    // console.log("From handleLogin", data);
 
     if (data.success) {
+
       sessionStorage.setItem(
         "accessToken",
         JSON.stringify(data.data.accessToken)
@@ -33,12 +68,39 @@ export default function AuthProvider({ children }) {
         authenticate: true,
         user: data.data.user,
       });
-    } else {
+      toast.success(data?.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        // transition: Bounce,
+      });
+
+    }
+    else {
       setAuth({
         authenticate: false,
         user: null,
       });
+
+      toast.error(data?.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        // transition: Bounce,
+      });
     }
+
+    setSignInFormData(initialSignInFormData);
   }
 
   //check auth user
